@@ -1,0 +1,276 @@
+/* ==========================================================================
+   MAIN.CSS — Design tokens, resets, base layout, glassmorphism primitives
+   ========================================================================== */
+
+:root {
+  /* ---- Palette (Dark Luxury) ---- */
+  --c-void:        #050505;
+  --c-obsidian:    #0b0b0b;
+  --c-charcoal:    #121212;
+  --c-ivory:       #ffffff;
+  --c-gold:        #ffd86b;
+  --c-rose:        #ff5ea8;
+  --c-crimson:     #ff2d55;
+  --c-lilac:       #d8b4ff;
+
+  /* ---- Gradients ---- */
+  --grad-gold:     linear-gradient(135deg, #ffd86b 0%, #ff9d6b 100%);
+  --grad-romance:  linear-gradient(135deg, #ff5ea8 0%, #d8b4ff 100%);
+  --grad-aurora:   linear-gradient(120deg, #ff5ea8 0%, #d8b4ff 45%, #ffd86b 100%);
+
+  /* ---- Typography ---- */
+  --font-display: 'Aref Ruqaa', serif;      /* hand-inked headline face   */
+  --font-script:  'Lemonada', cursive;      /* rounded warm accent face    */
+  --font-body:    'Tajawal', sans-serif;    /* clean utility / body face   */
+
+  --fs-hero:  clamp(2.4rem, 6vw, 5rem);
+  --fs-h1:    clamp(2rem, 4.5vw, 3.4rem);
+  --fs-h2:    clamp(1.5rem, 3vw, 2.2rem);
+  --fs-body:  clamp(1rem, 1.4vw, 1.15rem);
+  --fs-small: 0.85rem;
+
+  /* ---- Spacing / Layout ---- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --blur-glass: 18px;
+
+  /* ---- Motion ---- */
+  --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.35s;
+  --dur-med: 0.8s;
+  --dur-slow: 1.6s;
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; } /* Lenis takes over smooth scroll */
+html, body {
+  background: var(--c-void);
+  color: var(--c-ivory);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, video { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+::selection { background: var(--c-rose); color: var(--c-void); }
+
+/* Respect reduced motion everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Ambient / persistent layers ---- */
+.ambient-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+#particles-canvas { z-index: 0; }
+#golden-dust { z-index: 1; mix-blend-mode: screen; }
+#floating-hearts { z-index: 1; }
+
+/* ---- Section base ---- */
+.section {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--space-xl) var(--space-md);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+}
+
+.section__eyebrow {
+  font-family: var(--font-script);
+  color: var(--c-gold);
+  letter-spacing: 0.08em;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  text-align: center;
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section__body {
+  max-width: 62ch;
+  text-align: center;
+  line-height: 1.9;
+  font-size: var(--fs-body);
+  color: rgba(255,255,255,0.85);
+}
+
+/* ---- Glassmorphism primitive ---- */
+.glass {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 216, 107, 0.18);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(var(--blur-glass)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(140%);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+}
+
+/* ---- Golden divider line ---- */
+.golden-line {
+  width: 120px;
+  height: 2px;
+  background: var(--grad-gold);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(255, 216, 107, 0.7);
+}
+
+/* ---- Glow button ---- */
+.btn-glow {
+  font-family: var(--font-script);
+  font-size: 1.05rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 999px;
+  color: var(--c-void);
+  background: var(--grad-gold);
+  box-shadow: 0 0 24px rgba(255, 216, 107, 0.55), 0 0 60px rgba(255, 94, 168, 0.25);
+  transition: transform var(--dur-fast) var(--ease-silk), box-shadow var(--dur-fast) var(--ease-silk);
+}
+.btn-glow:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 0 32px rgba(255,216,107,0.8), 0 0 80px rgba(255,94,168,0.4); }
+.btn-glow:focus-visible { outline: 2px solid var(--c-ivory); outline-offset: 4px; }
+
+/* ---- Custom cursor ---- */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+.cursor-dot { width: 6px; height: 6px; background: var(--c-gold); }
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(255, 216, 107, 0.6);
+  transition: width var(--dur-fast) var(--ease-silk), height var(--dur-fast) var(--ease-silk), border-color var(--dur-fast);
+}
+@media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+
+/* ---- Scroll progress ---- */
+.scroll-progress {
+  position: fixed;
+  top: 0; right: 0; left: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  z-index: 60;
+}
+.scroll-progress__fill {
+  height: 100%;
+  width: 0%;
+  background: var(--grad-aurora);
+  box-shadow: 0 0 10px var(--c-rose);
+}
+
+/* ---- Music toggle ---- */
+.music-toggle {
+  position: fixed;
+  bottom: var(--space-md);
+  left: var(--space-md);
+  z-index: 50;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  gap: 3px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,216,107,0.3);
+  backdrop-filter: blur(10px);
+}
+.music-toggle__bar {
+  width: 3px; height: 10px;
+  background: var(--c-gold);
+  border-radius: 2px;
+  animation: musicBars 1s ease-in-out infinite;
+}
+.music-toggle__bar:nth-child(2) { animation-delay: 0.2s; }
+.music-toggle__bar:nth-child(3) { animation-delay: 0.4s; }
+.music-toggle.paused .music-toggle__bar { animation-play-state: paused; height: 4px; }
+
+.site[hidden], #preloader[hidden] { display: none !important; }
+
+/* ==========================================================================
+   Shared components for sections without a dedicated page stylesheet
+   (اللحظات الجميلة / المشاكل) — kept here since main.css is the general
+   component layer referenced by every section.
+   ========================================================================== */
+
+/* ---- Section 4: اللحظات الجميلة ---- */
+.memories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-sm);
+  width: min(100%, 1000px);
+}
+.memory-card {
+  padding: var(--space-md);
+  text-align: center;
+  transition: transform var(--dur-med) var(--ease-silk);
+}
+.memory-card:hover { transform: rotate(-1deg) translateY(-6px); }
+.memory-card__tag {
+  display: inline-block;
+  font-family: var(--font-script);
+  color: var(--c-lilac);
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  padding: 0.2rem 0.8rem;
+  border: 1px solid rgba(216,180,255,0.35);
+  border-radius: 999px;
+}
+.memory-card__text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.82);
+}
+
+/* ---- Section 3: المشاكل (storm) ---- */
+.section--problems {
+  overflow: hidden;
+  transition: background var(--dur-slow) var(--ease-silk);
+}
+.section--problems.is-stormy { background: radial-gradient(ellipse at 50% 20%, rgba(216,180,255,0.06), var(--c-void) 70%); }
+.problem-block { width: min(100%, 720px); text-align: center; z-index: 4; }
+.problem-block__heading {
+  font-family: var(--font-script);
+  color: var(--c-lilac);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.problem-block__text {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: var(--space-md);
+}
+.problem-block--resolution .problem-block__heading { color: var(--c-gold); }
+.mended-heart {
+  font-size: 2.6rem;
+  animation: heartbeat 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px rgba(255,94,168,0.6));
+}
