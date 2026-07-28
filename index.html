@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>{{HER_NAME}} — هدية إلى زوجتي المستقبلية</title>
+<meta name="description" content="رحلة تفاعلية كُتبت بالحب لـ {{HER_NAME}}">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Lemonada:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/pages/intro.css">
+<link rel="stylesheet" href="css/pages/timeline.css">
+<link rel="stylesheet" href="css/pages/gallery.css">
+<link rel="stylesheet" href="css/pages/poems.css">
+<link rel="stylesheet" href="css/pages/future.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ============ PRELOADER ============ -->
+  <div id="preloader" class="preloader">
+    <div class="preloader__stars"></div>
+    <div class="preloader__fog"></div>
+    <canvas id="pen-canvas" class="preloader__pen-canvas"></canvas>
+    <div class="preloader__text-stack">
+      <p class="pen-line" data-line="1">هدية إلى زوجتي المستقبلية</p>
+      <p class="pen-line pen-line--name" data-line="2">{{HER_NAME}}</p>
+      <p class="pen-line pen-line--nickname" data-line="3">{{NICKNAME}}</p>
+      <p class="pen-line pen-line--quote" data-line="4">هذه ليست مجرد صفحات...<br>بل رحلة كاملة كتبتها بقلبي.</p>
+    </div>
+    <button id="start-journey" class="btn-glow preloader__cta" hidden>ابدئي الرحلة ❤️</button>
+  </div>
+
+  <!-- ============ CUSTOM CURSOR ============ -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- ============ AMBIENT LAYERS (persist across whole site) ============ -->
+  <canvas id="particles-canvas" class="ambient-layer"></canvas>
+  <div id="floating-hearts" class="ambient-layer"></div>
+  <div id="golden-dust" class="ambient-layer"></div>
+
+  <!-- ============ MUSIC TOGGLE ============ -->
+  <button id="music-toggle" class="music-toggle" aria-label="تشغيل الموسيقى">
+    <span class="music-toggle__bar"></span>
+    <span class="music-toggle__bar"></span>
+    <span class="music-toggle__bar"></span>
+  </button>
+  <audio id="bg-music" src="assets/music/{{BACKGROUND_MUSIC}}.mp3" loop preload="none"></audio>
+
+  <!-- ============ MAIN SITE (hidden until journey starts) ============ -->
+  <main id="site" class="site" hidden>
+    <div id="section-intro"></div>
+    <div id="section-story"></div>
+    <div id="section-memories"></div>
+    <div id="section-problems"></div>
+    <div id="section-poems"></div>
+    <div id="section-gallery"></div>
+    <div id="section-future"></div>
+    <div id="section-ending"></div>
+  </main>
+
+  <!-- Golden progress line following scroll -->
+  <div class="scroll-progress"><div class="scroll-progress__fill" id="scroll-progress-fill"></div></div>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <script src="js/loader.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/book.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
