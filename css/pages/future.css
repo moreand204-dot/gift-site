@@ -1,0 +1,108 @@
+/* ==========================================================================
+   FUTURE.CSS — "المستقبل" section
+   ========================================================================== */
+
+.future-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  width: min(100%, 900px);
+}
+
+.future-card {
+  padding: var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  transition: transform var(--dur-med) var(--ease-silk);
+}
+.future-card:hover { transform: translateY(-8px); }
+
+.future-card__icon {
+  width: 56px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--grad-romance);
+  font-size: 1.6rem;
+  box-shadow: 0 0 24px rgba(255,94,168,0.4);
+}
+
+.future-card__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--c-gold);
+}
+
+.future-card__text {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.78);
+}
+
+/* Ending section */
+.ending {
+  position: relative;
+  min-height: 100vh;
+  background: var(--c-void);
+  overflow: hidden;
+}
+.ending__sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, #050505 0%, #0b0b0b 60%, #050505 100%);
+  background-size: 100% 200%;
+  transition: background-position 3s var(--ease-silk);
+}
+.ending__sky.is-sunrise {
+  background: linear-gradient(to bottom, #1a1030 0%, #ff5ea8 55%, #ffd86b 100%);
+  animation: sunrise 3s var(--ease-silk) forwards;
+}
+
+.ending__word-canvas {
+  width: min(90vw, 520px);
+  height: min(90vw, 520px);
+  margin-inline: auto;
+}
+
+.ending__heart-fill {
+  position: relative;
+  width: min(70vw, 360px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 29.6"><path d="M23.6.6c-3.4 0-6.3 2-7.6 4.9C14.7 2.6 11.8.6 8.4.6 3.8.6 0 4.4 0 9c0 8.5 8.4 13.6 16 20.9 7.6-7.3 16-12.4 16-20.9 0-4.6-3.8-8.4-8.4-8.4z"/></svg>') center/contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 29.6"><path d="M23.6.6c-3.4 0-6.3 2-7.6 4.9C14.7 2.6 11.8.6 8.4.6 3.8.6 0 4.4 0 9c0 8.5 8.4 13.6 16 20.9 7.6-7.3 16-12.4 16-20.9 0-4.6-3.8-8.4-8.4-8.4z"/></svg>') center/contain no-repeat;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  overflow: hidden;
+}
+.ending__heart-fill img { width: 100%; height: 100%; object-fit: cover; }
+
+.ending__final-message {
+  max-width: 60ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+  line-height: 2.1;
+  color: var(--c-ivory);
+  opacity: 0;
+}
+.ending__final-message.is-visible { animation: fadeUp 2s var(--ease-silk) both; }
+
+.ending__signoff {
+  font-family: var(--font-script);
+  font-size: clamp(1.4rem, 3.4vw, 2.2rem);
+  background: var(--grad-aurora);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+
+.falling-roses { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.rose {
+  position: absolute;
+  top: -5%;
+  font-size: 1.4rem;
+  animation: fallRose linear forwards;
+}

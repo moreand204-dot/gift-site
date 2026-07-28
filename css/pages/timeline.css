@@ -1,0 +1,76 @@
+/* ==========================================================================
+   TIMELINE.CSS — "رحلتنا" section
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+  width: min(100%, 900px);
+  padding-inline: var(--space-md);
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 50%;
+  width: 2px;
+  background: linear-gradient(var(--c-gold), var(--c-rose), var(--c-lilac));
+  box-shadow: 0 0 10px rgba(255,216,107,0.6);
+}
+
+.timeline__item {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin-bottom: var(--space-lg);
+  opacity: 0;
+  transform: translateY(40px);
+}
+.timeline__item.is-visible { animation: fadeUp var(--dur-slow) var(--ease-silk) both; }
+
+.timeline__item:nth-child(odd)  { justify-content: flex-start; }
+.timeline__item:nth-child(even) { justify-content: flex-end; }
+
+.timeline__marker {
+  position: absolute;
+  top: 6px;
+  right: calc(50% - 7px);
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  box-shadow: 0 0 0 4px rgba(255,216,107,0.15), 0 0 16px rgba(255,216,107,0.8);
+}
+
+.timeline__card {
+  width: min(90%, 380px);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline__date {
+  font-family: var(--font-script);
+  color: var(--c-rose);
+  font-size: var(--fs-small);
+  letter-spacing: 0.05em;
+}
+
+.timeline__photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,216,107,0.2);
+}
+
+.timeline__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--c-ivory);
+}
+
+.timeline__text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.8);
+}
