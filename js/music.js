@@ -1,5 +1,7 @@
 /* ==========================================================================
-   MUSIC.JS — background music toggle
+   MUSIC.JS — background music toggle. Uses the <audio> element's own
+   .paused state as the single source of truth (autoplay may start it
+   from main.js, so we don't track a separate "playing" flag here).
    ========================================================================== */
 
 const Music = (() => {
@@ -9,22 +11,24 @@ const Music = (() => {
     if (!btn || !audio) return;
 
     audio.volume = 0.35;
-    let playing = false;
+
+    function syncButton() {
+      btn.classList.toggle('paused', audio.paused);
+    }
 
     btn.addEventListener('click', () => {
-      if (playing) {
-        audio.pause();
-        btn.classList.add('paused');
-      } else {
+      if (audio.paused) {
         audio.play().catch(() => {
           console.warn('[Music] Add a track at assets/music/{{BACKGROUND_MUSIC}}.mp3 for playback to work.');
         });
-        btn.classList.remove('paused');
+      } else {
+        audio.pause();
       }
-      playing = !playing;
     });
 
-    btn.classList.add('paused'); // starts muted until the visitor opts in
+    audio.addEventListener('play', syncButton);
+    audio.addEventListener('pause', syncButton);
+    syncButton();
   }
   return { init };
 })();

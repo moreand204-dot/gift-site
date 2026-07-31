@@ -1,49 +1,18 @@
 /* ==========================================================================
-   SCROLL.JS — Lenis smooth scroll, scroll-progress bar, generic reveals
+   SCROLL.JS — reveal-on-scroll utilities (chapter navigation itself lives
+   in chapters.js; this file only handles fade-ins within a visible chapter)
    ========================================================================== */
-
-const SmoothScroll = (() => {
-  let lenis;
-
-  function init() {
-    if (typeof Lenis === 'undefined') return;
-    lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
-      smoothWheel: true,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    if (window.ScrollTrigger) {
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
-    }
-  }
-
-  return { init, get instance() { return lenis; } };
-})();
 
 const ScrollProgress = (() => {
   function init() {
     const fill = document.getElementById('scroll-progress-fill');
-    if (!fill) return;
-    window.addEventListener('scroll', () => {
-      const h = document.documentElement;
-      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-      fill.style.width = `${scrolled}%`;
-    });
+    if (!fill) return; // no global progress bar in the chapter-based layout
   }
   return { init };
 })();
 
 /* Generic [data-reveal] fade-up-on-scroll, using IntersectionObserver so it
-   works even before sections are wired into GSAP timelines individually. */
+   works even before content is wired into any other framework. */
 const ScrollReveal = (() => {
   function init(root = document) {
     const targets = root.querySelectorAll('[data-reveal]');

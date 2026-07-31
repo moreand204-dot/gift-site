@@ -73,26 +73,29 @@ const PenDraw = (() => {
   return { run };
 })();
 
-/* ---------- Ambient floating hearts ---------- */
+/* ---------- Ambient floating hearts (SVG icons, no emoji) ---------- */
 const FloatingHearts = (() => {
   let interval;
-  const GLYPHS = ['❤️', '💛', '✨'];
+  const ICONS = ['heart', 'heart', 'sparkles'];
 
   function spawnOne(host) {
     const el = document.createElement('span');
-    el.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+    const icon = ICONS[Math.floor(Math.random() * ICONS.length)];
+    el.innerHTML = `<i data-lucide="${icon}"></i>`;
     const size = Math.random() * 14 + 12;
     el.style.cssText = `
       position:absolute;
       left:${Math.random() * 100}%;
       bottom:-5%;
-      font-size:${size}px;
+      width:${size}px; height:${size}px;
+      color:${icon === 'sparkles' ? '#ffd86b' : '#ff5ea8'};
       --o:${Math.random() * 0.5 + 0.3};
       --s:${Math.random() * 0.6 + 0.6};
       --drift:${(Math.random() - 0.5) * 120}px;
       animation: floatUp ${10 + Math.random() * 8}s linear forwards;
     `;
     host.appendChild(el);
+    if (window.lucide) lucide.createIcons();
     setTimeout(() => el.remove(), 19000);
   }
 
@@ -106,6 +109,22 @@ const FloatingHearts = (() => {
 
   return { init, stop };
 })();
+
+/* ---------- Shared sound-effect helper ---------- */
+function playSfx(id, { loop = false } = {}) {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  try {
+    el.loop = loop;
+    el.currentTime = 0;
+    el.play().catch(() => {});
+  } catch (_) {}
+  return el;
+}
+function stopSfx(id) {
+  const el = document.getElementById(id);
+  if (el) { el.pause(); el.currentTime = 0; }
+}
 
 /* ---------- Storm: rain canvas + lightning flash for "problems" section ---------- */
 const Storm = (() => {
@@ -171,24 +190,35 @@ const Storm = (() => {
     buildRainCanvas(container);
     buildLightning(container);
     container.classList.add('is-stormy');
+    playSfx('sfx-rain', { loop: true });
+    setTimeout(() => playSfx('sfx-thunder'), 900);
   }
 
   function calm(container) {
     active = false;
     if (container) container.classList.remove('is-stormy');
+    stopSfx('sfx-rain');
   }
 
   return { start, calm };
 })();
 
-/* ---------- Falling roses for the ending ---------- */
+/* ---------- Falling roses for the ending (SVG shape, no emoji) ---------- */
 const FallingRoses = (() => {
+  const ROSE_SVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 3c-2 1.5-2 4-0.5 5.2C13.5 9.4 15 8 15 6.2 15 8 13 9 12 9.5 11 9 9 8 9 6.2 9 8 10.5 9.4 12.5 8.2 14 7 14 4.5 12 3Z" fill="#ff2d55"/>
+    <path d="M12 9.5c-1.4.9-2.4 2.4-2.4 4.1 0 2.4 1.9 4.4 4.3 4.6-.4-1.7-1-3.6-.9-5.6.05-1.2.5-2.3 1-3.1-.6.1-1.3-.1-2-0z" fill="#c81f42"/>
+    <path d="M12 13v8" stroke="#3a7d44" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M12 17c-1.4 0-2.6-.9-3-2.1M12 19c1.3-.1 2.4-1 2.8-2.2" stroke="#3a7d44" stroke-width="1.2" stroke-linecap="round"/>
+  </svg>`;
+
   function init(container, count = 26) {
     if (!container) return;
+    playSfx('sfx-rose-fall');
     for (let i = 0; i < count; i++) {
       const rose = document.createElement('span');
       rose.className = 'rose';
-      rose.textContent = '🌹';
+      rose.innerHTML = ROSE_SVG;
       rose.style.left = `${Math.random() * 100}%`;
       rose.style.animationDuration = `${6 + Math.random() * 6}s`;
       rose.style.animationDelay = `${Math.random() * 6}s`;
