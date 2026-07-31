@@ -1,0 +1,77 @@
+/* ==========================================================================
+   GATE.CSS — cinematic password screen shown before anything else loads
+   ========================================================================== */
+
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: radial-gradient(ellipse at center, var(--c-charcoal) 0%, var(--c-void) 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.1s var(--ease-silk), visibility 1.1s var(--ease-silk);
+}
+.gate.leaving { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.gate__panel {
+  width: min(90vw, 420px);
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.gate__icon {
+  color: var(--c-gold);
+  width: 40px; height: 40px;
+  filter: drop-shadow(0 0 10px rgba(255,216,107,0.6));
+}
+.gate__icon svg { width: 100%; height: 100%; }
+
+.gate__label {
+  font-family: var(--font-script);
+  font-size: 1.2rem;
+  color: var(--c-ivory);
+}
+
+.gate__input {
+  width: 100%;
+  margin-top: var(--space-sm);
+  padding: 0.9rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,216,107,0.35);
+  background: rgba(255,255,255,0.05);
+  color: var(--c-ivory);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.gate__input::placeholder { color: rgba(255,255,255,0.4); }
+.gate__input:focus { border-color: var(--c-gold); box-shadow: 0 0 18px rgba(255,216,107,0.35); }
+
+.gate__panel.is-shaking { animation: gateShake 0.5s; }
+@keyframes gateShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-10px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-6px); }
+  80%      { transform: translateX(4px); }
+}
+
+.gate__hint {
+  min-height: 1.4em;
+  font-size: 0.9rem;
+  color: var(--c-rose);
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.gate__hint.is-visible { opacity: 1; }
+
+.gate__submit {
+  margin-top: var(--space-xs);
+}

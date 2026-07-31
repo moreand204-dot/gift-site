@@ -1,0 +1,81 @@
+/* ==========================================================================
+   CHAPTERS.CSS — book-like chapter navigation + inter-chapter transition
+   ========================================================================== */
+
+.chapters {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.chapter {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s var(--ease-silk);
+  padding-bottom: var(--space-xl);
+}
+.chapter.is-active {
+  opacity: 1;
+  visibility: visible;
+  position: relative; /* lets its own content define page height while active */
+}
+
+.chapter-next {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg) 0 var(--space-md);
+}
+
+/* ---- Inter-chapter transition overlay: fades to black, pen draws a word ---- */
+.chapter-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--c-void);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s var(--ease-silk), visibility 0.9s var(--ease-silk);
+}
+.chapter-transition.is-active { opacity: 1; visibility: visible; }
+
+.chapter-transition__word {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--c-gold);
+  text-shadow: 0 0 20px rgba(255,216,107,0.5);
+  min-height: 1.4em;
+}
+
+.chapter-transition__next {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-med) var(--ease-silk), transform var(--dur-med) var(--ease-silk);
+}
+.chapter-transition__next.is-ready { opacity: 1; transform: translateY(0); }
+
+/* Chapter progress dots */
+.chapter-dots {
+  position: fixed;
+  bottom: var(--space-sm);
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  gap: 0.4rem;
+  z-index: 55;
+}
+.chapter-dots__dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.chapter-dots__dot.is-current { background: var(--c-gold); transform: scale(1.4); }

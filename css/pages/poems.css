@@ -74,7 +74,8 @@
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,216,107,0.3);
   color: var(--c-gold);
-  font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
   transition: transform var(--dur-fast);
 }
+.book__nav-btn svg { width: 20px; height: 20px; }
 .book__nav-btn:hover { transform: scale(1.1); }

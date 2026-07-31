@@ -1,0 +1,107 @@
+/* ==========================================================================
+   MOODS.CSS — mood-themed screenshot frames + the smaller chapters that
+   don't warrant their own dedicated page stylesheet.
+   ========================================================================== */
+
+/* ---- Screenshot frame, themed per the surrounding mood ---- */
+.chat-frame {
+  position: relative;
+  width: min(100%, 340px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: zoom-in;
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: transform var(--dur-med) var(--ease-silk);
+}
+.chat-frame:hover { transform: translateY(-6px) scale(1.02); }
+.chat-frame img { width: 100%; display: block; }
+.chat-frame__glow { position: absolute; inset: 0; pointer-events: none; opacity: 0.5; }
+
+.chat-frame--calm      { box-shadow: 0 10px 40px rgba(216,180,255,0.25); border-color: rgba(216,180,255,0.3); }
+.chat-frame--storm     { box-shadow: 0 10px 40px rgba(120,120,160,0.3); border-color: rgba(216,180,255,0.25); filter: saturate(0.85) brightness(0.92); }
+.chat-frame--reconcile { box-shadow: 0 10px 40px rgba(255,94,168,0.3); border-color: rgba(255,94,168,0.35); }
+.chat-frame--playful   { box-shadow: 0 10px 40px rgba(255,216,107,0.35); border-color: rgba(255,216,107,0.4); }
+
+.chat-frame-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  width: min(100%, 1000px);
+}
+
+/* ---- Generic "text chapter" layout shared by laughter / jokes / teasing / jealousy ---- */
+.chapter-copy {
+  max-width: 64ch;
+  text-align: center;
+  line-height: 2;
+  font-size: 1.02rem;
+  color: rgba(255,255,255,0.88);
+  white-space: pre-line;
+}
+
+.chapter-icon-badge {
+  width: 64px; height: 64px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,216,107,0.25);
+  color: var(--c-gold);
+}
+.chapter-icon-badge svg { width: 30px; height: 30px; }
+
+.placeholder-note {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  font-style: italic;
+}
+
+/* ---- Reconciliation (الصلح): calm after the storm, gentle rose fall ---- */
+.section--reconciliation { position: relative; overflow: hidden; }
+
+/* ---- Dreams (الأحلام): soft floating wish cards ---- */
+.dreams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-sm);
+  width: min(100%, 900px);
+}
+.dream-card {
+  padding: var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* ---- Letters (الرسائل): voice note player ---- */
+.voice-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 1rem 1.4rem;
+  width: min(100%, 420px);
+}
+.voice-note__icon {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--grad-gold);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-void);
+  flex-shrink: 0;
+}
+.voice-note__meta { flex: 1; text-align: right; }
+.voice-note__label { font-family: var(--font-script); color: var(--c-gold); font-size: 0.9rem; }
+.voice-note audio { width: 100%; margin-top: 0.3rem; }
+
+/* ---- Dedicated full poem display (القصائد) ---- */
+.poem-display {
+  max-width: 56ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  line-height: 2.3;
+  color: var(--c-ivory);
+  white-space: pre-line;
+}

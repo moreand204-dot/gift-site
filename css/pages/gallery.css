@@ -71,13 +71,13 @@
 .lightbox__close, .lightbox__nav {
   position: absolute;
   color: var(--c-ivory);
-  font-size: 1.6rem;
   width: 48px; height: 48px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,216,107,0.25);
 }
+.lightbox__close svg, .lightbox__nav svg { width: 20px; height: 20px; }
 .lightbox__close { top: var(--space-sm); left: var(--space-sm); }
 .lightbox__nav--prev { right: var(--space-sm); top: 50%; transform: translateY(-50%); }
 .lightbox__nav--next { left: var(--space-sm); top: 50%; transform: translateY(-50%); }
