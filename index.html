@@ -14,17 +14,34 @@
 <!-- Styles -->
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/pages/gate.css">
 <link rel="stylesheet" href="css/pages/intro.css">
+<link rel="stylesheet" href="css/pages/chapters.css">
 <link rel="stylesheet" href="css/pages/timeline.css">
 <link rel="stylesheet" href="css/pages/gallery.css">
 <link rel="stylesheet" href="css/pages/poems.css">
 <link rel="stylesheet" href="css/pages/future.css">
+<link rel="stylesheet" href="css/pages/moods.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
-  <!-- ============ PRELOADER ============ -->
-  <div id="preloader" class="preloader">
+  <!-- ============ PASSWORD GATE ============ -->
+  <div id="gate" class="gate">
+    <form id="gate-form" class="gate__panel glass">
+      <span class="gate__icon"><i data-lucide="lock"></i></span>
+      <p class="gate__label">حطي كلمة السر</p>
+      <input id="gate-input" class="gate__input" type="text" placeholder="حطي اسم أفضل شخص لقلبك..." autocomplete="off">
+      <p id="gate-hint" class="gate__hint"></p>
+      <button type="submit" class="btn-glow gate__submit">
+        <i data-lucide="key-round"></i>
+        دخول
+      </button>
+    </form>
+  </div>
+
+  <!-- ============ PRELOADER (cinematic opening) ============ -->
+  <div id="preloader" class="preloader" hidden>
     <div class="preloader__stars"></div>
     <div class="preloader__fog"></div>
     <canvas id="pen-canvas" class="preloader__pen-canvas"></canvas>
@@ -34,7 +51,10 @@
       <p class="pen-line pen-line--nickname" data-line="3">{{NICKNAME}}</p>
       <p class="pen-line pen-line--quote" data-line="4">هذه ليست مجرد صفحات...<br>بل رحلة كاملة كتبتها بقلبي.</p>
     </div>
-    <button id="start-journey" class="btn-glow preloader__cta" hidden>ابدئي الرحلة ❤️</button>
+    <button id="start-journey" class="btn-glow preloader__cta" hidden>
+      <i data-lucide="heart"></i>
+      ابدئي الرحلة
+    </button>
   </div>
 
   <!-- ============ CUSTOM CURSOR ============ -->
@@ -54,31 +74,59 @@
   </button>
   <audio id="bg-music" src="assets/music/{{BACKGROUND_MUSIC}}.mp3" loop preload="none"></audio>
 
-  <!-- ============ MAIN SITE (hidden until journey starts) ============ -->
+  <!-- ============ SOUND EFFECTS (drop real files into assets/sfx/) ============ -->
+  <audio id="sfx-heartbeat"  src="assets/sfx/heartbeat.mp3"  preload="none"></audio>
+  <audio id="sfx-pen"        src="assets/sfx/pen-draw.mp3"   preload="none"></audio>
+  <audio id="sfx-page-flip"  src="assets/sfx/page-flip.mp3"  preload="none"></audio>
+  <audio id="sfx-gift-open"  src="assets/sfx/gift-open.mp3"  preload="none"></audio>
+  <audio id="sfx-rose-fall"  src="assets/sfx/rose-fall.mp3"  preload="none"></audio>
+  <audio id="sfx-rain"       src="assets/sfx/rain.mp3"       preload="none" loop></audio>
+  <audio id="sfx-thunder"    src="assets/sfx/thunder.mp3"    preload="none"></audio>
+  <audio id="sfx-whisper"    src="assets/sfx/whisper.mp3"    preload="none"></audio>
+  <audio id="sfx-typing"     src="assets/sfx/typing.mp3"     preload="none"></audio>
+
+  <!-- ============ MAIN SITE: one chapter visible at a time ============ -->
   <main id="site" class="site" hidden>
-    <div id="section-intro"></div>
-    <div id="section-story"></div>
-    <div id="section-memories"></div>
-    <div id="section-problems"></div>
-    <div id="section-poems"></div>
-    <div id="section-gallery"></div>
-    <div id="section-future"></div>
-    <div id="section-ending"></div>
+    <div class="chapters">
+      <div class="chapter" id="chapter-beginning"></div>
+      <div class="chapter" id="chapter-memories"></div>
+      <div class="chapter" id="chapter-problems"></div>
+      <div class="chapter" id="chapter-reconciliation"></div>
+      <div class="chapter" id="chapter-laughter"></div>
+      <div class="chapter" id="chapter-jokes"></div>
+      <div class="chapter" id="chapter-teasing"></div>
+      <div class="chapter" id="chapter-jealousy"></div>
+      <div class="chapter" id="chapter-poetry-book"></div>
+      <div class="chapter" id="chapter-poems"></div>
+      <div class="chapter" id="chapter-letters"></div>
+      <div class="chapter" id="chapter-dreams"></div>
+      <div class="chapter" id="chapter-future"></div>
+      <div class="chapter" id="chapter-ending"></div>
+    </div>
   </main>
 
-  <!-- Golden progress line following scroll -->
-  <div class="scroll-progress"><div class="scroll-progress__fill" id="scroll-progress-fill"></div></div>
+  <!-- Inter-chapter transition: fades to black, pen draws a random word -->
+  <div id="chapter-transition" class="chapter-transition">
+    <canvas id="chapter-pen-canvas" width="220" height="220" style="width:140px;height:140px;"></canvas>
+    <p id="chapter-transition-word" class="chapter-transition__word"></p>
+    <button id="chapter-transition-next" class="btn-glow chapter-transition__next" data-chapter-next>
+      <i data-lucide="arrow-left"></i>
+      جاهزة للقسم اللي بعده؟
+    </button>
+  </div>
 
   <!-- ============ SCRIPTS ============ -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
+  <script src="js/gate.js"></script>
   <script src="js/loader.js"></script>
   <script src="js/particles.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/effects.js"></script>
   <script src="js/scroll.js"></script>
+  <script src="js/chapters.js"></script>
   <script src="js/timeline.js"></script>
   <script src="js/book.js"></script>
   <script src="js/gallery.js"></script>
