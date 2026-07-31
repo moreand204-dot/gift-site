@@ -1,0 +1,46 @@
+<section class="section section--memories">
+  <span class="chapter-icon-badge"><i data-lucide="images"></i></span>
+  <span class="section__eyebrow">الفصل الثاني</span>
+  <h2 class="section__title">الذكريات</h2>
+  <div class="golden-line"></div>
+  <p class="placeholder-note">{{MEMORIES_INTRO}} — استبدلي هذا السطر بمقدمة قصيرة عن ذكرياتكم</p>
+
+  <div class="timeline">
+    <div class="timeline__item">
+      <span class="timeline__marker"></span>
+      <div class="timeline__card glass">
+        <span class="timeline__date">{{DATE_01}}</span>
+        <img class="timeline__photo" src="assets/images/{{PHOTO_01}}" alt="{{MEMORY_01_ALT}}">
+        <h3 class="timeline__title">{{MILESTONE_01_TITLE}}</h3>
+        <p class="timeline__text">{{MEMORY_01}}</p>
+      </div>
+    </div>
+    <div class="timeline__item">
+      <span class="timeline__marker"></span>
+      <div class="timeline__card glass">
+        <span class="timeline__date">{{DATE_02}}</span>
+        <img class="timeline__photo" src="assets/images/{{PHOTO_02}}" alt="{{MEMORY_02_ALT}}">
+        <h3 class="timeline__title">{{MILESTONE_02_TITLE}}</h3>
+        <p class="timeline__text">{{MEMORY_02}}</p>
+      </div>
+    </div>
+    <!-- كرري هذا البلوك لكل محطة إضافية -->
+  </div>
+
+  <h3 class="section__eyebrow" style="margin-top:var(--space-md);">لقطات من محادثاتنا</h3>
+  <div class="gallery-grid" data-reveal>
+    <div class="gallery-item"><img src="assets/images/screenshots/chat-02.jpg" loading="lazy" alt="ذكرى محادثة"><span class="gallery-item__caption">{{CAPTION_01}}</span></div>
+    <div class="gallery-item"><img src="assets/images/screenshots/chat-09.jpg" loading="lazy" alt="ذكرى محادثة"><span class="gallery-item__caption">{{CAPTION_02}}</span></div>
+  </div>
+
+  <div class="lightbox">
+    <button class="lightbox__close" aria-label="إغلاق"><i data-lucide="x"></i></button>
+    <button class="lightbox__nav lightbox__nav--prev" aria-label="السابقة"><i data-lucide="chevron-right"></i></button>
+    <img class="lightbox__img" src="" alt="">
+    <button class="lightbox__nav lightbox__nav--next" aria-label="التالية"><i data-lucide="chevron-left"></i></button>
+  </div>
+
+  <div class="chapter-next">
+    <button class="btn-glow" data-chapter-next>جاهزة للقسم اللي بعده؟</button>
+  </div>
+</section>
