@@ -19,11 +19,7 @@ const Chapters = (() => {
   let current = 0;
   let dotsHost;
 
-  function playSfx(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    try { el.currentTime = 0; el.play().catch(() => {}); } catch (_) {}
-  }
+  // Uses the global playSfx() / Sfx module defined in effects.js + sfx.js
 
   function buildDots() {
     dotsHost = document.createElement('div');
@@ -66,10 +62,10 @@ const Chapters = (() => {
 
     wordEl.textContent = '';
     wordEl.classList.remove('ink-reveal');
-    playSfx('sfx-heartbeat');
+    playSfx('heartbeat');
 
     if (window.PenDraw && penCanvas) {
-      playSfx('sfx-pen');
+      playSfx('penDraw');
       PenDraw.run(penCanvas, {
         duration: 1000,
         onDone() {

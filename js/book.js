@@ -22,10 +22,10 @@ const PoemBook = (() => {
     }
 
     nextBtn?.addEventListener('click', () => {
-      if (current < pages.length) { current++; render(); playSfx('sfx-page-flip'); }
+      if (current < pages.length) { current++; render(); playSfx('pageFlip'); }
     });
     prevBtn?.addEventListener('click', () => {
-      if (current > 0) { current--; render(); playSfx('sfx-page-flip'); }
+      if (current > 0) { current--; render(); playSfx('pageFlip'); }
     });
 
     render();

@@ -110,25 +110,15 @@ const FloatingHearts = (() => {
   return { init, stop };
 })();
 
-/* ---------- Shared sound-effect helper ---------- */
-function playSfx(id, { loop = false } = {}) {
-  const el = document.getElementById(id);
-  if (!el) return null;
-  try {
-    el.loop = loop;
-    el.currentTime = 0;
-    el.play().catch(() => {});
-  } catch (_) {}
-  return el;
-}
-function stopSfx(id) {
-  const el = document.getElementById(id);
-  if (el) { el.pause(); el.currentTime = 0; }
+/* ---------- Shared sound-effect helper (synthesized, see js/sfx.js) ---------- */
+function playSfx(name) {
+  try { window.Sfx && window.Sfx[name] && window.Sfx[name](); } catch (_) {}
 }
 
 /* ---------- Storm: rain canvas + lightning flash for "problems" section ---------- */
 const Storm = (() => {
   let active = false;
+  let stopRain = null;
 
   function buildRainCanvas(container) {
     const canvas = document.createElement('canvas');
@@ -190,14 +180,14 @@ const Storm = (() => {
     buildRainCanvas(container);
     buildLightning(container);
     container.classList.add('is-stormy');
-    playSfx('sfx-rain', { loop: true });
-    setTimeout(() => playSfx('sfx-thunder'), 900);
+    if (window.Sfx) stopRain = window.Sfx.rainStart();
+    setTimeout(() => playSfx('thunder'), 900);
   }
 
   function calm(container) {
     active = false;
     if (container) container.classList.remove('is-stormy');
-    stopSfx('sfx-rain');
+    if (stopRain) { stopRain(); stopRain = null; }
   }
 
   return { start, calm };
@@ -214,7 +204,7 @@ const FallingRoses = (() => {
 
   function init(container, count = 26) {
     if (!container) return;
-    playSfx('sfx-rose-fall');
+    playSfx('roseFall');
     for (let i = 0; i < count; i++) {
       const rose = document.createElement('span');
       rose.className = 'rose';

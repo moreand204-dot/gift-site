@@ -59,8 +59,7 @@ const Loader = (() => {
   }
 
   function startPreloader() {
-    const gift = document.getElementById('sfx-gift-open');
-    if (gift) gift.play().catch(() => {});
+    playSfx('giftOpen');
     const preloader = document.getElementById('preloader');
     if (preloader) preloader.hidden = false;
     runPenSequence();

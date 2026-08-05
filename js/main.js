@@ -48,7 +48,7 @@
     ending.dataset.done = '1';
 
     const wordHost = ending.querySelector('.ending__word-target');
-    const words = ['{{HER_NAME}}', '{{NICKNAME}}', 'بحبك', 'قلبي', 'روحي', 'مراتي', 'أجمل هدية'];
+    const words = ['Manon', 'بحبك', 'قلبي', 'روحي', 'مراتي', 'أجمل هدية'];
     const sky = ending.querySelector('.ending__sky');
     const rosesHost = ending.querySelector('.falling-roses');
     const finalMsg = ending.querySelector('.ending__final-message');
@@ -65,6 +65,7 @@
     Timeline.init();
     PoemBook.init();
     Gallery.init();
+    Typewriter.init();
     document.addEventListener('chapter:shown', handleChapterShown);
   }
 
@@ -73,6 +74,8 @@
 
     document.addEventListener('gate:unlocked', () => {
       const penCanvas = document.getElementById('pen-canvas');
+      playSfx('heartbeat');
+      playSfx('penDraw');
       PenDraw.run(penCanvas, { duration: 2400 });
     }, { once: true });
 
