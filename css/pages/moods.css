@@ -50,6 +50,207 @@
 }
 .chapter-icon-badge svg { width: 30px; height: 30px; }
 
+.chapter-closing {
+  max-width: 46ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  line-height: 2.1;
+  color: var(--c-gold);
+  text-shadow: 0 0 16px rgba(255,216,107,0.35);
+  white-space: pre-line;
+}
+
+.chapter-poem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255,216,107,0.15);
+  margin-top: var(--space-sm);
+}
+.chapter-poem__label {
+  font-family: var(--font-script);
+  color: var(--c-rose);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   CONTENT LIBRARY — long-form romantic content blocks (letters, poems,
+   short verses, posts, phrase collections) used across every chapter.
+   ========================================================================== */
+
+.content-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: min(100%, 420px);
+  margin: var(--space-lg) auto var(--space-md);
+}
+.content-divider::before,
+.content-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,216,107,0.5), transparent);
+}
+.content-divider__icon {
+  color: var(--c-gold);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  filter: drop-shadow(0 0 8px rgba(255,216,107,0.5));
+}
+.content-divider__icon svg { width: 18px; height: 18px; }
+
+.content-heading {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--c-ivory);
+  margin-bottom: 0.3rem;
+}
+.content-heading__sub {
+  display: block;
+  text-align: center;
+  font-family: var(--font-script);
+  color: var(--c-rose);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-md);
+}
+
+/* Long-form letters */
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-md);
+  width: min(100%, 1100px);
+}
+.letter-card {
+  padding: var(--space-md);
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.letter-card__title {
+  font-family: var(--font-script);
+  color: var(--c-gold);
+  font-size: 1.05rem;
+}
+.letter-card__body {
+  font-size: 0.96rem;
+  line-height: 2;
+  color: rgba(255,255,255,0.85);
+}
+
+/* Full poems */
+.poem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-md);
+  width: min(100%, 1100px);
+}
+.poem-card {
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+.poem-card__title {
+  font-family: var(--font-script);
+  color: var(--c-rose);
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+.poem-card__body {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  line-height: 2.3;
+  color: var(--c-ivory);
+  white-space: pre-line;
+}
+
+/* Short/medium poems — typewriter target */
+.verse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-sm);
+  width: min(100%, 1000px);
+}
+.verse-card {
+  padding: var(--space-md);
+  text-align: center;
+}
+.verse-card__body {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 2.1;
+  color: var(--c-gold);
+  white-space: pre-line;
+  min-height: 3em;
+}
+.verse-card__cursor {
+  display: inline-block;
+  width: 2px;
+  background: var(--c-gold);
+  margin-inline-start: 2px;
+  animation: cursorBlink 0.9s steps(1) infinite;
+}
+@keyframes cursorBlink { 50% { opacity: 0; } }
+
+/* Ready-to-post posts */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-sm);
+  width: min(100%, 1000px);
+}
+.post-card {
+  padding: 1.2rem;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.88);
+  position: relative;
+}
+.post-card__icon {
+  color: var(--c-rose);
+  width: 20px; height: 20px;
+  margin: 0 auto 0.6rem;
+}
+.post-card__icon svg { width: 100%; height: 100%; }
+
+/* Short quote boxes, grouped by phrase category */
+.quote-category {
+  width: min(100%, 900px);
+  margin-bottom: var(--space-md);
+}
+.quote-category__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-script);
+  color: var(--c-lilac);
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+.quote-category__title svg { width: 18px; height: 18px; }
+.quote-box-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+.quote-box {
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  color: var(--c-ivory);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,216,107,0.2);
+}
+
 .placeholder-note {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.4);
