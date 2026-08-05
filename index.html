@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>{{HER_NAME}} — هدية إلى زوجتي المستقبلية</title>
-<meta name="description" content="رحلة تفاعلية كُتبت بالحب لـ {{HER_NAME}}">
+<title>Manon — هدية إلى زوجتي المستقبلية</title>
+<meta name="description" content="رحلة تفاعلية كُتبت بالحب لـ Manon">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,9 +47,8 @@
     <canvas id="pen-canvas" class="preloader__pen-canvas"></canvas>
     <div class="preloader__text-stack">
       <p class="pen-line" data-line="1">هدية إلى زوجتي المستقبلية</p>
-      <p class="pen-line pen-line--name" data-line="2">{{HER_NAME}}</p>
-      <p class="pen-line pen-line--nickname" data-line="3">{{NICKNAME}}</p>
-      <p class="pen-line pen-line--quote" data-line="4">هذه ليست مجرد صفحات...<br>بل رحلة كاملة كتبتها بقلبي.</p>
+      <p class="pen-line pen-line--name" data-line="2">Manon</p>
+      <p class="pen-line pen-line--quote" data-line="3">هذه ليست مجرد صفحات...<br>بل رحلة كاملة كتبتها بقلبي.</p>
     </div>
     <button id="start-journey" class="btn-glow preloader__cta" hidden>
       <i data-lucide="heart"></i>
@@ -72,18 +71,7 @@
     <span class="music-toggle__bar"></span>
     <span class="music-toggle__bar"></span>
   </button>
-  <audio id="bg-music" src="assets/music/{{BACKGROUND_MUSIC}}.mp3" loop preload="none"></audio>
-
-  <!-- ============ SOUND EFFECTS (drop real files into assets/sfx/) ============ -->
-  <audio id="sfx-heartbeat"  src="assets/sfx/heartbeat.mp3"  preload="none"></audio>
-  <audio id="sfx-pen"        src="assets/sfx/pen-draw.mp3"   preload="none"></audio>
-  <audio id="sfx-page-flip"  src="assets/sfx/page-flip.mp3"  preload="none"></audio>
-  <audio id="sfx-gift-open"  src="assets/sfx/gift-open.mp3"  preload="none"></audio>
-  <audio id="sfx-rose-fall"  src="assets/sfx/rose-fall.mp3"  preload="none"></audio>
-  <audio id="sfx-rain"       src="assets/sfx/rain.mp3"       preload="none" loop></audio>
-  <audio id="sfx-thunder"    src="assets/sfx/thunder.mp3"    preload="none"></audio>
-  <audio id="sfx-whisper"    src="assets/sfx/whisper.mp3"    preload="none"></audio>
-  <audio id="sfx-typing"     src="assets/sfx/typing.mp3"     preload="none"></audio>
+  <audio id="bg-music" loop preload="none"></audio>
 
   <!-- ============ MAIN SITE: one chapter visible at a time ============ -->
   <main id="site" class="site" hidden>
@@ -121,6 +109,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <script src="js/gate.js"></script>
+  <script src="js/sfx.js"></script>
   <script src="js/loader.js"></script>
   <script src="js/particles.js"></script>
   <script src="js/cursor.js"></script>
@@ -128,6 +117,7 @@
   <script src="js/scroll.js"></script>
   <script src="js/chapters.js"></script>
   <script src="js/timeline.js"></script>
+  <script src="js/typewriter.js"></script>
   <script src="js/book.js"></script>
   <script src="js/gallery.js"></script>
   <script src="js/music.js"></script>
