@@ -222,6 +222,8 @@ ul { list-style: none; }
 .music-toggle__bar:nth-child(2) { animation-delay: 0.2s; }
 .music-toggle__bar:nth-child(3) { animation-delay: 0.4s; }
 .music-toggle.paused .music-toggle__bar { animation-play-state: paused; height: 4px; }
+.music-toggle--missing { opacity: 0.35; }
+.music-toggle--missing .music-toggle__bar { background: rgba(255,255,255,0.4); }
 
 .site[hidden], #preloader[hidden] { display: none !important; }
 
