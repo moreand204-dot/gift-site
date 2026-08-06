@@ -17,7 +17,9 @@ const Typewriter = (() => {
     el.appendChild(cursor);
 
     let i = 0;
-    const speed = 28;
+    // Adaptive speed: short verses type slowly for effect; long poems speed up
+    // so a full poem still finishes within a few seconds.
+    const speed = full.length > 120 ? 10 : 28;
     function step() {
       if (i < full.length) {
         cursor.insertAdjacentText('beforebegin', full[i]);
@@ -31,8 +33,14 @@ const Typewriter = (() => {
   }
 
   function init(root = document) {
-    const targets = root.querySelectorAll('[data-typewriter]');
+    // Explicit [data-typewriter] elements (short verses) plus full poems,
+    // which type themselves using their existing text content.
+    const explicit = Array.from(root.querySelectorAll('[data-typewriter]'));
+    const poems = Array.from(root.querySelectorAll('.poem-card__body:not([data-typewriter])'));
+    poems.forEach((el) => { el.dataset.typewriter = el.textContent; });
+    const targets = explicit.concat(poems);
     if (!targets.length) return;
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -40,7 +48,7 @@ const Typewriter = (() => {
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.35 });
     targets.forEach((t) => io.observe(t));
   }
 

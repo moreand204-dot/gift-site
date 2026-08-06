@@ -4,6 +4,10 @@
    silently break playback: just drop your file in assets/music/ named
    "song.<mp3|m4a|wav|ogg>" and it will be found automatically. You can
    still hardcode an exact filename below if you prefer.
+
+   If no file is found, the toggle button gets a `.music-toggle--missing`
+   class (dimmed, no bars animating) so it's visually obvious this is a
+   "no file uploaded" situation, not a broken button.
    ========================================================================== */
 
 const Music = (() => {
@@ -17,25 +21,34 @@ const Music = (() => {
     'assets/music/music.mp3',
   ];
 
-  function findWorkingSrc(audio) {
+  function probeOne(candidate) {
     return new Promise((resolve) => {
-      let i = 0;
-      function tryNext() {
-        if (i >= CANDIDATES.length) { resolve(null); return; }
-        const candidate = CANDIDATES[i++];
-        const probe = new Audio();
-        const cleanup = () => {
-          probe.removeEventListener('loadedmetadata', onOk);
-          probe.removeEventListener('error', onFail);
-        };
-        const onOk = () => { cleanup(); resolve(candidate); };
-        const onFail = () => { cleanup(); tryNext(); };
-        probe.addEventListener('loadedmetadata', onOk, { once: true });
-        probe.addEventListener('error', onFail, { once: true });
-        probe.src = candidate;
-      }
-      tryNext();
+      const probe = new Audio();
+      let settled = false;
+      const finish = (ok) => {
+        if (settled) return;
+        settled = true;
+        probe.removeEventListener('loadedmetadata', onOk);
+        probe.removeEventListener('error', onFail);
+        resolve(ok ? candidate : null);
+      };
+      const onOk = () => finish(true);
+      const onFail = () => finish(false);
+      probe.addEventListener('loadedmetadata', onOk, { once: true });
+      probe.addEventListener('error', onFail, { once: true });
+      probe.src = candidate;
+      probe.load();
+      // Safety net: some browsers never fire either event for a 404 in odd setups.
+      setTimeout(() => finish(false), 4000);
     });
+  }
+
+  async function findWorkingSrc() {
+    for (const candidate of CANDIDATES) {
+      const found = await probeOne(candidate);
+      if (found) return found;
+    }
+    return null;
   }
 
   function init() {
@@ -44,23 +57,32 @@ const Music = (() => {
     if (!btn || !audio) return;
 
     audio.volume = 0.35;
+    let trackFound = false;
 
     function syncButton() {
-      btn.classList.toggle('paused', audio.paused);
+      btn.classList.toggle('paused', audio.paused || !trackFound);
     }
 
-    findWorkingSrc(audio).then((src) => {
+    findWorkingSrc().then((src) => {
       if (src) {
+        trackFound = true;
         audio.src = src;
+        console.info('[Music] Track found at', src);
       } else {
-        console.warn('[Music] No background track found. Add a file at assets/music/song.mp3 (or edit CANDIDATES in js/music.js to match your filename).');
+        btn.classList.add('music-toggle--missing');
+        console.warn('[Music] No background track found. Add a file at assets/music/song.mp3 (exact name, case-sensitive) — see CANDIDATES in js/music.js to use a different filename.');
       }
+      syncButton();
     });
 
     btn.addEventListener('click', () => {
+      if (!trackFound) {
+        console.warn('[Music] No track loaded yet — add assets/music/song.mp3.');
+        return;
+      }
       if (audio.paused) {
-        audio.play().catch(() => {
-          console.warn('[Music] Playback blocked or file missing — check assets/music/.');
+        audio.play().catch((err) => {
+          console.warn('[Music] Playback blocked:', err && err.message);
         });
       } else {
         audio.pause();

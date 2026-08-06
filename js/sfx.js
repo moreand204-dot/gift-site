@@ -3,20 +3,46 @@
    API. No external mp3 files are required for these, so nothing can be
    "missing" on deploy. Background music + the real voice note still use
    normal <audio> elements (see index.html / sections/11-letters.html).
+
+   Levels are boosted and heartbeat uses a layered thump (low sine + a
+   short mid-frequency click) so it stays audible on small phone speakers,
+   which usually roll off very low bass.
    ========================================================================== */
 
 const Sfx = (() => {
-  let ctx;
+  let ctx, master;
+
   function getCtx() {
     if (!ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
-      if (AC) ctx = new AC();
+      if (AC) {
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0.9;
+        master.connect(ctx.destination);
+      }
     }
     if (ctx && ctx.state === 'suspended') ctx.resume();
     return ctx;
   }
 
-  function tone(freq, { duration = 0.15, type = 'sine', gain = 0.2, glideTo, delay = 0 } = {}) {
+  // Call this on the very first user tap/click anywhere on the page to make
+  // sure the AudioContext is unlocked as early as possible (helps iOS Safari).
+  function unlock() {
+    const c = getCtx();
+    if (!c) return;
+    if (c.state === 'suspended') c.resume();
+    // Play a near-silent buffer once — the classic iOS unlock trick.
+    try {
+      const b = c.createBuffer(1, 1, 22050);
+      const s = c.createBufferSource();
+      s.buffer = b;
+      s.connect(c.destination);
+      s.start(0);
+    } catch (_) {}
+  }
+
+  function tone(freq, { duration = 0.15, type = 'sine', gain = 0.3, glideTo, delay = 0 } = {}) {
     const c = getCtx();
     if (!c) return;
     const t0 = c.currentTime + delay;
@@ -28,12 +54,12 @@ const Sfx = (() => {
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime(gain, t0 + 0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
-    osc.connect(g).connect(c.destination);
+    osc.connect(g).connect(master);
     osc.start(t0);
     osc.stop(t0 + duration + 0.05);
   }
 
-  function noiseBurst({ duration = 0.3, gain = 0.15, delay = 0, filterFreq = 1200, type = 'lowpass' } = {}) {
+  function noiseBurst({ duration = 0.3, gain = 0.2, delay = 0, filterFreq = 1200, type = 'lowpass' } = {}) {
     const c = getCtx();
     if (!c) return;
     const t0 = c.currentTime + delay;
@@ -52,32 +78,42 @@ const Sfx = (() => {
     g.gain.exponentialRampToValueAtTime(gain, t0 + 0.03);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
 
-    noise.connect(filter).connect(g).connect(c.destination);
+    noise.connect(filter).connect(g).connect(master);
     noise.start(t0);
     noise.stop(t0 + duration + 0.05);
   }
 
+  // A percussive "thump" built from a low sine + a short mid-range click,
+  // so it reads as a heartbeat even on speakers that can't reproduce bass.
+  function thump(delay = 0) {
+    tone(55, { duration: 0.22, type: 'sine', gain: 0.55, delay });
+    tone(150, { duration: 0.08, type: 'triangle', gain: 0.25, delay });
+    noiseBurst({ duration: 0.06, gain: 0.15, delay, filterFreq: 220, type: 'lowpass' });
+  }
+
   return {
-    // Two soft low thumps, like a heartbeat.
+    unlock,
+
+    // Two thumps, like a heartbeat — loud enough for phone speakers.
     heartbeat() {
-      tone(70, { duration: 0.14, type: 'sine', gain: 0.35 });
-      tone(65, { duration: 0.16, type: 'sine', gain: 0.28, delay: 0.22 });
+      thump(0);
+      thump(0.32);
     },
     // Quick rising scratch — a pen touching paper.
     penDraw() {
-      noiseBurst({ duration: 0.5, gain: 0.05, filterFreq: 2600, type: 'highpass' });
+      noiseBurst({ duration: 0.5, gain: 0.16, filterFreq: 2600, type: 'highpass' });
     },
     // Soft paper flip: short filtered noise sweep.
     pageFlip() {
-      noiseBurst({ duration: 0.22, gain: 0.12, filterFreq: 1800 });
+      noiseBurst({ duration: 0.22, gain: 0.3, filterFreq: 1800 });
     },
     // Bright ascending chime — a gift being opened.
     giftOpen() {
-      [523, 659, 784, 1046].forEach((f, i) => tone(f, { duration: 0.3, type: 'triangle', gain: 0.18, delay: i * 0.09 }));
+      [523, 659, 784, 1046].forEach((f, i) => tone(f, { duration: 0.3, type: 'triangle', gain: 0.32, delay: i * 0.09 }));
     },
     // Light falling flutter for a rose petal.
     roseFall() {
-      tone(900, { duration: 0.4, type: 'sine', gain: 0.06, glideTo: 400 });
+      tone(900, { duration: 0.4, type: 'sine', gain: 0.16, glideTo: 400 });
     },
     // Continuous soft rain hiss. Returns a stop() function.
     rainStart() {
@@ -96,8 +132,8 @@ const Sfx = (() => {
       filter.Q.value = 0.6;
       const g = c.createGain();
       g.gain.setValueAtTime(0.0001, c.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.05, c.currentTime + 1);
-      noise.connect(filter).connect(g).connect(c.destination);
+      g.gain.exponentialRampToValueAtTime(0.14, c.currentTime + 1);
+      noise.connect(filter).connect(g).connect(master);
       noise.start();
       return () => {
         try {
@@ -108,8 +144,13 @@ const Sfx = (() => {
     },
     // Low rumble + crack for thunder.
     thunder() {
-      noiseBurst({ duration: 1.1, gain: 0.22, filterFreq: 300 });
-      tone(55, { duration: 0.9, type: 'sawtooth', gain: 0.15, delay: 0.05 });
+      noiseBurst({ duration: 1.1, gain: 0.35, filterFreq: 300 });
+      tone(55, { duration: 0.9, type: 'sawtooth', gain: 0.3, delay: 0.05 });
     },
   };
 })();
+
+// Unlock audio on the very first tap/click anywhere (covers the gate screen).
+['pointerdown', 'click', 'touchstart'].forEach((evt) => {
+  document.addEventListener(evt, () => Sfx.unlock(), { once: true, passive: true });
+});

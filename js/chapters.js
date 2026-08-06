@@ -64,25 +64,22 @@ const Chapters = (() => {
     wordEl.classList.remove('ink-reveal');
     playSfx('heartbeat');
 
-    if (window.PenDraw && penCanvas) {
-      playSfx('penDraw');
-      PenDraw.run(penCanvas, {
-        duration: 1000,
-        onDone() {
-          wordEl.textContent = TRANSITION_WORDS[Math.floor(Math.random() * TRANSITION_WORDS.length)];
-          void wordEl.offsetWidth;
-          wordEl.classList.add('ink-reveal');
-        },
-      });
-    } else {
-      setTimeout(() => {
-        wordEl.textContent = TRANSITION_WORDS[Math.floor(Math.random() * TRANSITION_WORDS.length)];
-        void wordEl.offsetWidth;
-        wordEl.classList.add('ink-reveal');
-      }, 400);
+    function revealWordThenButton() {
+      wordEl.textContent = TRANSITION_WORDS[Math.floor(Math.random() * TRANSITION_WORDS.length)];
+      void wordEl.offsetWidth;
+      wordEl.classList.add('ink-reveal');
+
+      // Wait 5–7 seconds (random) after the word appears before the "next" button shows.
+      const waitMs = 5000 + Math.random() * 2000;
+      setTimeout(() => nextBtn.classList.add('is-ready'), waitMs);
     }
 
-    setTimeout(() => nextBtn.classList.add('is-ready'), 1900);
+    if (window.PenDraw && penCanvas) {
+      playSfx('penDraw');
+      PenDraw.run(penCanvas, { duration: 1400, onDone: revealWordThenButton });
+    } else {
+      setTimeout(revealWordThenButton, 600);
+    }
 
     nextBtn.onclick = () => {
       overlay.classList.remove('is-active');
